@@ -3,8 +3,8 @@ $(document).ready(function(){
         constructor() {
             this.currentTime = 0;
             this.remaining = 0;
-            this.pomodoroTime = 25*60; // in seconds
-            this.pomodoroBreakTime = 5*60; // in seconds
+            this.pomodoroTime = 24; // in minutes
+            this.pomodoroBreakTime = 5; // in minutes
         }
 
         start() {
@@ -29,17 +29,30 @@ $(document).ready(function(){
         }
         
         display(time){
+            let currentSeconds = 60 - (time%60);
+            let currentMinutes = this.pomodoroTime - Math.floor(time/60);
+
+            if(currentSeconds < 10){
+                currentSeconds = '0' + currentSeconds; 
+            }else if(currentSeconds === 60){
+                currentSeconds = '00';
+            }
+
+            if(currentMinutes < 10){
+                currentMinutes = '0' + currentMinutes; 
+            }else if(currentMinutes === 60){
+                currentMinutes = '00';
+            }
             
-            document.getElementById("seconds").textContent = 60 - time;
+            document.getElementById("seconds").textContent = currentSeconds;
+            document.getElementById("minutes").textContent = currentMinutes;
         }
     }
 
     let myChrono = new Chrono();
 
     $('button').click(function(){
-        /* var btnText = $(this).text(); */
-        var btnID = $(this).attr('id');
-        /* var spanMinutes = $(this).parents('.code').siblings('.exemple'); */
+        let btnID = $(this).attr('id');
 
         if(btnID == 'start'){
             myChrono.start();
